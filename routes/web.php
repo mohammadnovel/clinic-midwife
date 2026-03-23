@@ -18,6 +18,7 @@ use App\Http\Controllers\PncVisitController;
 use App\Http\Controllers\FamilyPlanningController;
 use App\Http\Controllers\ImmunizationRecordController;
 use App\Http\Controllers\WebsiteContentController;
+use App\Http\Controllers\ReferralController;
 use Illuminate\Support\Facades\Route;
 
 use App\Models\Service;
@@ -49,8 +50,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('family-plannings', FamilyPlanningController::class);
     Route::resource('immunizations', ImmunizationRecordController::class);
 
-    // Finance & CMS
+    // Finance, Referrals & CMS
     Route::resource('transactions', TransactionController::class);
+    Route::resource('referrals', ReferralController::class);
     Route::resource('website-contents', WebsiteContentController::class);
 
     // Reports

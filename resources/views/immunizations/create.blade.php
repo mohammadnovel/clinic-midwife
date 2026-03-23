@@ -1,67 +1,72 @@
 <x-admin-layout>
-    <div class="mx-auto max-w-270">
-        <div class="mb-6 flex gap-3 sm:items-center">
-            <a href="{{ route('immunizations.index') }}" class="text-gray-500 hover:text-black">
-                <i class="fas fa-arrow-left"></i> Kembali
-            </a>
-            <h2 class="text-title-md2 font-bold text-black dark:text-white">Catat Vaksinasi / Imunisasi</h2>
+<div class="mx-auto max-w-2xl">
+    <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+            <h2 class="text-2xl font-bold text-black dark:text-white"><i class="fas fa-syringe mr-2 text-green-500"></i>Catat Vaksinasi / Imunisasi</h2>
+            <p class="text-sm text-gray-500 mt-1">Pencatatan pemberian vaksin kepada pasien.</p>
         </div>
-
-        <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-            <form action="{{ route('immunizations.store') }}" method="POST" class="p-6.5">
-                @csrf
-
-                <div class="mb-4.5">
-                    <label class="mb-2.5 block text-black dark:text-white">Pilih Anak / Pasien <span
-                            class="text-meta-1">*</span></label>
-                    <div class="relative z-20 bg-transparent dark:bg-form-input">
-                        <select name="patient_id"
-                            class="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary select2">
-                            <option value="">-- Pilih Pasien --</option>
-                            @foreach($patients as $p)
-                                <option value="{{ $p->id }}">{{ $p->name }} ({{ $p->nik }})</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-
-                <div class="mb-4.5">
-                    <label class="mb-2.5 block text-black dark:text-white">Jenis Vaksin <span
-                            class="text-meta-1">*</span></label>
-                    <div class="relative z-20 bg-transparent dark:bg-form-input">
-                        <select name="immunization_type_id"
-                            class="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
-                            @foreach($types as $t)
-                                <option value="{{ $t->id }}">{{ $t->name }} (Usia: {{ $t->recommended_age_months }} bln)
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-
-                <div class="mb-4.5 flex gap-4">
-                    <div class="w-1/2">
-                        <label class="mb-2.5 block text-black dark:text-white">Tanggal Vaksinasi</label>
-                        <input type="date" name="date_given" value="{{ date('Y-m-d') }}"
-                            class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                            required />
-                    </div>
-                    <div class="w-1/2">
-                        <label class="mb-2.5 block text-black dark:text-white">Nomor Batch Vaksin</label>
-                        <input type="text" name="batch_number" placeholder="Contoh: BATCH-12345"
-                            class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
-                    </div>
-                </div>
-
-                <div class="mb-4.5">
-                    <label class="mb-2.5 block text-black dark:text-white">Catatan / Reaksi</label>
-                    <textarea name="notes" rows="3"
-                        class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"></textarea>
-                </div>
-
-                <button class="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray-100">Simpan
-                    Data</button>
-            </form>
-        </div>
+        <a href="{{ route('immunizations.index') }}" class="inline-flex items-center gap-2 rounded-lg border border-stroke bg-white px-4 py-2 text-sm font-medium text-black hover:bg-gray-50 dark:bg-meta-4 dark:text-white dark:border-strokedark shadow-sm">
+            <i class="fas fa-arrow-left"></i> Kembali
+        </a>
     </div>
+
+    @if($errors->any())
+    <div class="mb-4 rounded-lg border border-red-200 bg-red-50 p-4 dark:bg-red-900/20"><ul class="list-disc pl-5 text-sm text-red-600">@foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul></div>
+    @endif
+
+    <div class="rounded-xl border border-stroke bg-white shadow-sm dark:border-strokedark dark:bg-boxdark">
+        <div class="flex items-center gap-3 border-b border-stroke px-6 py-4 dark:border-strokedark">
+            <div class="flex h-9 w-9 items-center justify-center rounded-full bg-green-100 text-green-600"><i class="fas fa-syringe text-sm"></i></div>
+            <h3 class="font-semibold text-black dark:text-white">Data Imunisasi</h3>
+        </div>
+        <form action="{{ route('immunizations.store') }}" method="POST" class="p-6 space-y-4">
+            @csrf
+
+            <div>
+                <label class="mb-2 block text-sm font-medium text-black dark:text-white">Pasien / Anak <span class="text-red-500">*</span></label>
+                <select name="patient_id" required class="w-full rounded-lg border border-stroke bg-transparent py-3 px-4 text-sm outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+                    <option value="">-- Pilih Pasien --</option>
+                    @foreach($patients as $p)
+                    <option value="{{ $p->id }}" {{ old('patient_id') == $p->id ? 'selected' : '' }}>{{ $p->name }} &mdash; {{ $p->nik }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div>
+                <label class="mb-2 block text-sm font-medium text-black dark:text-white">Jenis Vaksin <span class="text-red-500">*</span></label>
+                <select name="immunization_type_id" required class="w-full rounded-lg border border-stroke bg-transparent py-3 px-4 text-sm outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+                    <option value="">-- Pilih Jenis Vaksin --</option>
+                    @foreach($types as $t)
+                    <option value="{{ $t->id }}" {{ old('immunization_type_id') == $t->id ? 'selected' : '' }}>
+                        {{ $t->name }} &mdash; Usia: {{ $t->recommended_age_months }} bulan
+                    </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="mb-2 block text-sm font-medium text-black dark:text-white">Tanggal Vaksinasi <span class="text-red-500">*</span></label>
+                    <input type="date" name="date_given" value="{{ old('date_given', date('Y-m-d')) }}" required
+                        class="w-full rounded-lg border border-stroke bg-transparent py-3 px-4 text-sm outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
+                </div>
+                <div>
+                    <label class="mb-2 block text-sm font-medium text-black dark:text-white">Nomor Batch Vaksin</label>
+                    <input type="text" name="batch_number" value="{{ old('batch_number') }}" placeholder="Contoh: BATCH-12345"
+                        class="w-full rounded-lg border border-stroke bg-transparent py-3 px-4 text-sm outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
+                </div>
+            </div>
+
+            <div>
+                <label class="mb-2 block text-sm font-medium text-black dark:text-white">Catatan / Reaksi Vaksin</label>
+                <textarea name="notes" rows="3" placeholder="Reaksi setelah vaksinasi, efek samping, dll..."
+                    class="w-full rounded-lg border border-stroke bg-transparent py-3 px-4 text-sm outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">{{ old('notes') }}</textarea>
+            </div>
+
+            <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-3.5 text-sm font-semibold text-white transition hover:bg-opacity-90 active:scale-95">
+                <i class="fas fa-save"></i> Simpan Data Imunisasi
+            </button>
+        </form>
+    </div>
+</div>
 </x-admin-layout>

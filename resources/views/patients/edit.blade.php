@@ -1,64 +1,94 @@
 <x-admin-layout>
-    <div class="mx-auto max-w-270">
-        <div class="mb-6 flex gap-3 sm:items-center">
-            <a href="{{ route('patients.index') }}" class="text-gray-500 hover:text-black">
-                <i class="fas fa-arrow-left"></i> Kembali
-            </a>
-            <h2 class="text-title-md2 font-bold text-black dark:text-white">Edit Data Pasien</h2>
+<div class="mx-auto max-w-2xl">
+    <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+            <h2 class="text-2xl font-bold text-black dark:text-white"><i class="fas fa-user-edit mr-2 text-primary"></i>Edit Data Pasien</h2>
+            <p class="text-sm text-gray-500 mt-1">{{ $patient->name }}</p>
         </div>
-
-        <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-            <form action="{{ route('patients.update', $patient->id) }}" method="POST" class="p-6.5">
-                @csrf
-                @method('PUT')
-                <div class="mb-4.5">
-                    <label class="mb-2.5 block text-black dark:text-white">NIK <span
-                            class="text-meta-1">*</span></label>
-                    <input type="number" name="nik" value="{{ $patient->nik }}"
-                        class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:bg-gray-100" />
-                </div>
-
-                <div class="mb-4.5 flex flex-col gap-6 xl:flex-row">
-                    <div class="w-full xl:w-1/2">
-                        <label class="mb-2.5 block text-black dark:text-white">Nama Lengkap <span
-                                class="text-meta-1">*</span></label>
-                        <input type="text" name="name" value="{{ $patient->name }}"
-                            class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                            required />
-                    </div>
-
-                    <div class="w-full xl:w-1/2">
-                        <label class="mb-2.5 block text-black dark:text-white">Tanggal Lahir <span
-                                class="text-meta-1">*</span></label>
-                        <input type="date" name="date_of_birth" value="{{ $patient->date_of_birth }}"
-                            class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                            required />
-                    </div>
-                </div>
-
-                <div class="mb-4.5">
-                    <label class="mb-2.5 block text-black dark:text-white">Alamat</label>
-                    <textarea name="address" rows="3"
-                        class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">{{ $patient->address }}</textarea>
-                </div>
-
-                <div class="mb-4.5 flex flex-col gap-6 xl:flex-row">
-                    <div class="w-full xl:w-1/2">
-                        <label class="mb-2.5 block text-black dark:text-white">Nomor HP</label>
-                        <input type="text" name="phone" value="{{ $patient->phone }}"
-                            class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
-                    </div>
-
-                    <div class="w-full xl:w-1/2">
-                        <label class="mb-2.5 block text-black dark:text-white">Nama Suami</label>
-                        <input type="text" name="husband_name" value="{{ $patient->husband_name }}"
-                            class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
-                    </div>
-                </div>
-
-                <button class="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray-100">Update Data
-                    Pasien</button>
-            </form>
-        </div>
+        <a href="{{ route('patients.index') }}" class="inline-flex items-center gap-2 rounded-lg border border-stroke bg-white px-4 py-2 text-sm font-medium text-black hover:bg-gray-50 dark:bg-meta-4 dark:text-white dark:border-strokedark shadow-sm">
+            <i class="fas fa-arrow-left"></i> Kembali
+        </a>
     </div>
+
+    @if($errors->any())
+    <div class="mb-4 rounded-lg border border-red-200 bg-red-50 p-4 dark:bg-red-900/20"><ul class="list-disc pl-5 text-sm text-red-600">@foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul></div>
+    @endif
+
+    <div class="rounded-xl border border-stroke bg-white shadow-sm dark:border-strokedark dark:bg-boxdark">
+        <div class="flex items-center gap-3 border-b border-stroke px-6 py-4 dark:border-strokedark">
+            <div class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary"><i class="fas fa-id-card text-sm"></i></div>
+            <h3 class="font-semibold text-black dark:text-white">Informasi Pribadi</h3>
+        </div>
+        <form action="{{ route('patients.update', $patient->id) }}" method="POST" class="p-6 space-y-4">
+            @csrf @method('PUT')
+
+            <div>
+                <label class="mb-2 block text-sm font-medium text-black dark:text-white">NIK (16 Digit) <span class="text-red-500">*</span></label>
+                <div class="relative">
+                    <input type="number" name="nik" value="{{ old('nik', $patient->nik) }}" required
+                        class="w-full rounded-lg border border-stroke bg-transparent py-3 pl-10 pr-4 text-sm outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><i class="fas fa-id-card text-sm"></i></span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="mb-2 block text-sm font-medium text-black dark:text-white">Nama Lengkap <span class="text-red-500">*</span></label>
+                    <div class="relative">
+                        <input type="text" name="name" value="{{ old('name', $patient->name) }}" required
+                            class="w-full rounded-lg border border-stroke bg-transparent py-3 pl-10 pr-4 text-sm outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><i class="fas fa-user text-sm"></i></span>
+                    </div>
+                </div>
+                <div>
+                    <label class="mb-2 block text-sm font-medium text-black dark:text-white">Tanggal Lahir <span class="text-red-500">*</span></label>
+                    <input type="date" name="date_of_birth" value="{{ old('date_of_birth', $patient->date_of_birth) }}" required
+                        class="w-full rounded-lg border border-stroke bg-transparent py-3 px-4 text-sm outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
+                </div>
+            </div>
+
+            <div>
+                <label class="mb-2 block text-sm font-medium text-black dark:text-white">Alamat Lengkap</label>
+                <textarea name="address" rows="3" class="w-full rounded-lg border border-stroke bg-transparent py-3 px-4 text-sm outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">{{ old('address', $patient->address) }}</textarea>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="mb-2 block text-sm font-medium text-black dark:text-white">No. HP / WhatsApp</label>
+                    <div class="relative">
+                        <input type="text" name="phone" value="{{ old('phone', $patient->phone) }}"
+                            class="w-full rounded-lg border border-stroke bg-transparent py-3 pl-10 pr-4 text-sm outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><i class="fas fa-phone text-sm"></i></span>
+                    </div>
+                </div>
+                <div>
+                    <label class="mb-2 block text-sm font-medium text-black dark:text-white">Nama Suami</label>
+                    <input type="text" name="husband_name" value="{{ old('husband_name', $patient->husband_name) }}"
+                        class="w-full rounded-lg border border-stroke bg-transparent py-3 px-4 text-sm outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="mb-2 block text-sm font-medium text-black dark:text-white">No. BPJS</label>
+                    <input type="text" name="bpjs_number" value="{{ old('bpjs_number', $patient->bpjs_number) }}"
+                        class="w-full rounded-lg border border-stroke bg-transparent py-3 px-4 text-sm outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
+                </div>
+                <div>
+                    <label class="mb-2 block text-sm font-medium text-black dark:text-white">Golongan Darah</label>
+                    <select name="blood_type" class="w-full rounded-lg border border-stroke bg-transparent py-3 px-4 text-sm outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+                        <option value="">-- Pilih --</option>
+                        @foreach(['A','B','AB','O','A+','A-','B+','B-','AB+','AB-','O+','O-'] as $bt)
+                        <option value="{{ $bt }}" {{ old('blood_type', $patient->blood_type) == $bt ? 'selected' : '' }}>{{ $bt }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-3.5 text-sm font-semibold text-white transition hover:bg-opacity-90 active:scale-95">
+                <i class="fas fa-save"></i> Simpan Perubahan
+            </button>
+        </form>
+    </div>
+</div>
 </x-admin-layout>

@@ -1,5 +1,25 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}"
+    x-data="{ bookingOpen: false }"
+    x-init="$watch('bookingOpen', val => {
+        if (val) {
+            $nextTick(() => {
+                window._s2open = false;
+                $('#select-service').select2({
+                    placeholder: '-- Pilih Layanan --',
+                    allowClear: true,
+                    dropdownParent: $('body'),
+                    width: '100%',
+                });
+                $('#select-service').on('select2:open',  () => { window._s2open = true;  });
+                $('#select-service').on('select2:close', () => { setTimeout(() => { window._s2open = false; }, 150); });
+            });
+        } else {
+            if ($('#select-service').data('select2')) {
+                $('#select-service').select2('destroy');
+            }
+        }
+    })">
 
 <head>
     <meta charset="utf-8">
@@ -9,15 +29,105 @@
     <link href="https://fonts.bunny.net/css?family=poppins:300,400,500,600,700&display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
+        body { font-family: 'Poppins', sans-serif; }
+        [x-cloak] { display: none !important; }
+        .modal-enter { animation: modalIn 0.3s ease forwards; }
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to   { opacity: 1; transform: scale(1) translateY(0); }
         }
-
-        .hero-bg {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1555252333-9f8e92e65df4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
-            background-size: cover;
-            background-position: center;
+        .input-pub {
+            width: 100%;
+            padding: 12px 16px 12px 44px;
+            border-radius: 10px;
+            border: 1.5px solid #e5e7eb;
+            background: #f9fafb;
+            font-size: 0.875rem;
+            outline: none;
+            transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+        }
+        .input-pub:focus {
+            border-color: #db2777;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(219,39,119,0.12);
+        }
+        .select-pub {
+            width: 100%;
+            padding: 12px 16px 12px 44px;
+            border-radius: 10px;
+            border: 1.5px solid #e5e7eb;
+            background: #f9fafb;
+            font-size: 0.875rem;
+            outline: none;
+            appearance: none;
+            transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+        }
+        .select-pub:focus {
+            border-color: #db2777;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(219,39,119,0.12);
+        }
+        /* Select2 — body appended, z-index above modal (z-[999]) */
+        .select2-container--open .select2-dropdown { z-index: 10000 !important; }
+        /* Force always open below */
+        .select2-dropdown--above {
+            top: calc(100% + 4px) !important;
+            bottom: auto !important;
+            border-radius: 10px !important;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+        }
+        /* Select field styling */
+        .select2-container { width: 100% !important; }
+        .select2-container--default .select2-selection--single {
+            height: 46px !important;
+            border-radius: 10px !important;
+            border: 1.5px solid #e5e7eb !important;
+            background: #f9fafb !important;
+            padding-left: 40px;
+            display: flex !important;
+            align-items: center;
+        }
+        .select2-container--default.select2-container--open .select2-selection--single,
+        .select2-container--default.select2-container--focus .select2-selection--single {
+            border-color: #db2777 !important;
+            background: #fff !important;
+            box-shadow: 0 0 0 3px rgba(219,39,119,0.12) !important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: normal !important;
+            padding-left: 0 !important;
+            color: #374151;
+            font-size: 0.875rem;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__placeholder { color: #9ca3af; }
+        .select2-container--default .select2-selection--single .select2-selection__arrow { display: none; }
+        /* Dropdown styling */
+        .select2-dropdown {
+            border-radius: 10px !important;
+            border: 1.5px solid #e5e7eb !important;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+            font-size: 0.875rem;
+            overflow: hidden;
+        }
+        .select2-search--dropdown { padding: 8px; }
+        .select2-search--dropdown .select2-search__field {
+            border-radius: 8px;
+            border: 1.5px solid #e5e7eb;
+            padding: 7px 12px;
+            font-size: 0.8rem;
+            outline: none;
+        }
+        .select2-search--dropdown .select2-search__field:focus { border-color: #db2777; }
+        .select2-container--default .select2-results__option { padding: 10px 16px; color: #374151; }
+        .select2-container--default .select2-results__option--highlighted[aria-selected] {
+            background-color: #db2777 !important;
         }
     </style>
 </head>
@@ -87,9 +197,10 @@
                         Utama Kami</h1>
                     <p class="text-lg opacity-90 mb-8">Memberikan pelayanan kebidanan profesional, ramah, dan terpercaya
                         untuk mendampingi masa-masa indah kehamilan hingga tumbuh kembang si kecil.</p>
-                    <a href="#booking"
-                        class="inline-block px-8 py-3 bg-pink-600 text-white font-bold rounded shadow hover:bg-pink-700 transition">Buat
-                        Janji Temu</a>
+                    <button @click="bookingOpen = true"
+                        class="inline-flex items-center gap-2 px-8 py-3.5 bg-pink-600 text-white font-bold rounded-full shadow-lg hover:bg-pink-700 active:scale-95 transition">
+                        <i class="fas fa-calendar-plus"></i> Buat Janji Temu
+                    </button>
                 </div>
 
                 <!-- Queue Stats Card -->
@@ -121,76 +232,148 @@
         </div>
     </div>
 
-    <!-- Booking Overlay -->
-    <div class="relative -mt-12 z-10 px-4 mb-20" id="booking">
-        <div class="max-w-6xl mx-auto bg-white rounded-lg shadow-xl p-8 border-t-4 border-pink-600">
+    <!-- Booking Modal -->
+    <div x-cloak x-show="bookingOpen"
+        class="fixed inset-0 z-[999] flex items-center justify-center p-4"
+        x-transition:enter="transition ease-out duration-200"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in duration-150"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0">
 
-            @if(session('success'))
-                <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative">
-                    <strong class="font-bold">Sukses!</strong>
-                    <span class="block sm:inline">{{ session('success') }}</span>
-                </div>
-            @endif
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="if(!window._s2open) bookingOpen = false"></div>
 
-            @if(session('error'))
-                <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
-                    <strong class="font-bold">Error!</strong>
-                    <span class="block sm:inline">{{ session('error') }}</span>
-                </div>
-            @endif
+        <!-- Modal Card -->
+        <div id="booking-modal-card" class="relative w-full max-w-xl bg-white rounded-2xl shadow-2xl modal-enter"
+            @click.stop>
 
-            <form action="{{ route('queue.store') }}" method="POST">
-                @csrf
-                <div class="grid grid-cols-1 md:grid-cols-5 gap-6 items-end">
-                    <div>
-                        <label class="block text-gray-600 text-sm font-bold mb-2">Nama Lengkap</label>
-                        <input type="text" name="name" placeholder="Nama Pasien" required
-                            class="w-full px-4 py-3 rounded bg-gray-50 border border-gray-200 focus:outline-none focus:border-pink-500">
+            <!-- Modal Header -->
+            <div class="bg-gradient-to-r from-pink-600 to-pink-500 px-6 py-5 text-white rounded-t-2xl">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-calendar-plus text-lg"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold leading-tight">Daftar Antrian</h3>
+                            <p class="text-pink-100 text-xs">Isi data di bawah untuk mendaftar kunjungan</p>
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-gray-600 text-sm font-bold mb-2">No. HP</label>
-                        <input type="text" name="phone" placeholder="08..." required
-                            class="w-full px-4 py-3 rounded bg-gray-50 border border-gray-200 focus:outline-none focus:border-pink-500">
-                    </div>
-                    <div class="hidden">
-                        <!-- Simplification: For new users, we might default DOB or ask it? 
-                             Let's assume users might be returning, or we force a date. 
-                             To avoid UI clutter, let's add DOB field but maybe small? 
-                             Actually, 5 columns is tight. Let's start with basic fields.
-                             Wait, controller requires DOB for new patients. 
-                             Let's Add input type date for DOB.
-                        -->
-                    </div>
-                    <div>
-                        <label class="block text-gray-600 text-sm font-bold mb-2">Tgl Lahir</label>
-                        <input type="date" name="dob" required
-                            class="w-full px-4 py-3 rounded bg-gray-50 border border-gray-200 focus:outline-none focus:border-pink-500">
-                    </div>
-
-                    <div>
-                        <label class="block text-gray-600 text-sm font-bold mb-2">Kunjungan</label>
-                        <input type="date" name="visit_date" required min="{{ date('Y-m-d') }}"
-                            class="w-full px-4 py-3 rounded bg-gray-50 border border-gray-200 focus:outline-none focus:border-pink-500">
-                    </div>
-                    <div>
-                        <label class="block text-gray-600 text-sm font-bold mb-2">Layanan</label>
-                        <select name="service" required
-                            class="w-full px-4 py-3 rounded bg-gray-50 border border-gray-200 focus:outline-none focus:border-pink-500">
-                            <option value="ANC">Pemeriksaan Kehamilan</option>
-                            <option value="Persalinan">Persalinan</option>
-                            <option value="Imunisasi">Imunisasi Anak</option>
-                            <option value="KB">Keluarga Berencana</option>
-                            <option value="Umum">Konsultasi Umum</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="mt-6">
-                    <button type="submit"
-                        class="w-full px-6 py-3 bg-gray-900 text-white font-bold rounded hover:bg-gray-800 transition">
-                        Daftar Antrian
+                    <button @click="bookingOpen = false"
+                        class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition">
+                        <i class="fas fa-times text-sm"></i>
                     </button>
                 </div>
-            </form>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-6">
+                <form id="booking-modal-form" action="{{ route('queue.store') }}" method="POST" class="space-y-4">
+                    @csrf
+
+                    <!-- Row 1: Nama + No HP -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">
+                                Nama Lengkap <span class="text-red-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400 pointer-events-none">
+                                    <i class="fas fa-user text-sm"></i>
+                                </span>
+                                <input type="text" name="name" value="{{ old('name') }}" required
+                                    placeholder="Nama lengkap pasien"
+                                    class="input-pub" />
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">
+                                No. HP / WhatsApp <span class="text-red-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400 pointer-events-none">
+                                    <i class="fas fa-phone text-sm"></i>
+                                </span>
+                                <input type="text" name="phone" value="{{ old('phone') }}" required
+                                    placeholder="08xx-xxxx-xxxx"
+                                    class="input-pub" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Tanggal Lahir + Tanggal Kunjungan -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">
+                                Tanggal Lahir <span class="text-red-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400 pointer-events-none">
+                                    <i class="fas fa-birthday-cake text-sm"></i>
+                                </span>
+                                <input type="date" name="dob" value="{{ old('dob') }}" required
+                                    class="input-pub" />
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">
+                                Tanggal Kunjungan <span class="text-red-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400 pointer-events-none">
+                                    <i class="fas fa-calendar text-sm"></i>
+                                </span>
+                                <input type="date" name="visit_date" value="{{ old('visit_date', date('Y-m-d')) }}"
+                                    required min="{{ date('Y-m-d') }}"
+                                    class="input-pub" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Row 3: Layanan -->
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">
+                            Jenis Layanan <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400 pointer-events-none z-10">
+                                <i class="fas fa-stethoscope text-sm"></i>
+                            </span>
+                            <select id="select-service" name="service" required class="select-pub">
+                                <option value="">-- Pilih Layanan --</option>
+                                <option value="ANC"        {{ old('service') == 'ANC'        ? 'selected' : '' }}>Pemeriksaan Kehamilan (ANC)</option>
+                                <option value="Persalinan" {{ old('service') == 'Persalinan' ? 'selected' : '' }}>Persalinan Normal</option>
+                                <option value="Imunisasi"  {{ old('service') == 'Imunisasi'  ? 'selected' : '' }}>Imunisasi Anak</option>
+                                <option value="KB"         {{ old('service') == 'KB'         ? 'selected' : '' }}>Keluarga Berencana (KB)</option>
+                                <option value="Nifas"      {{ old('service') == 'Nifas'      ? 'selected' : '' }}>Kunjungan Nifas</option>
+                                <option value="Umum"       {{ old('service') == 'Umum'       ? 'selected' : '' }}>Konsultasi Umum</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Info Note -->
+                    <div class="flex items-start gap-2.5 rounded-xl bg-pink-50 border border-pink-100 p-3.5">
+                        <i class="fas fa-info-circle text-pink-400 mt-0.5 flex-shrink-0"></i>
+                        <p class="text-xs text-pink-700 leading-relaxed">
+                            Nomor antrian akan dikirim via WhatsApp. Pastikan nomor HP aktif dan dapat dihubungi.
+                        </p>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex gap-3 pt-1">
+                        <button type="button" @click="bookingOpen = false"
+                            class="flex-1 py-3 rounded-xl border-2 border-gray-200 text-gray-600 font-semibold text-sm hover:bg-gray-50 transition active:scale-95">
+                            Batal
+                        </button>
+                        <button type="submit"
+                            class="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-pink-600 text-white font-semibold text-sm hover:bg-pink-700 transition active:scale-95 shadow-md shadow-pink-200">
+                            <i class="fas fa-paper-plane"></i> Daftar Sekarang
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -451,9 +634,10 @@
             <h2 class="text-3xl font-bold mb-6">Siap untuk Kunjungan Anda?</h2>
             <p class="text-xl mb-8 opacity-90">Jangan ragu untuk berkonsultasi mengenai kesehatan kehamilan dan buah
                 hati Anda bersama kami.</p>
-            <a href="{{ route('login') }}"
-                class="inline-block px-8 py-3 bg-white text-pink-600 font-bold rounded shadow hover:bg-gray-100 transition">Daftar
-                Sekarang</a>
+            <button @click="bookingOpen = true"
+                class="inline-flex items-center gap-2 px-8 py-3.5 bg-white text-pink-600 font-bold rounded-full shadow-lg hover:bg-gray-50 active:scale-95 transition">
+                <i class="fas fa-calendar-plus"></i> Daftar Antrian Sekarang
+            </button>
         </div>
     </section>
 
@@ -519,6 +703,41 @@
             &copy; 2025 Klinik Bidan Sejahtera. All Rights Reserved.
         </div>
     </footer>
+
+
+<script>
+    @if(session('success'))
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil Terdaftar!',
+                html: '<p class="text-gray-600">{{ addslashes(session('success')) }}</p>',
+                confirmButtonColor: '#db2777',
+                confirmButtonText: 'Oke, Terima Kasih!',
+                showClass: { popup: 'animate__animated animate__fadeInDown' },
+            });
+        });
+    @endif
+
+    @if(session('error'))
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: 'error',
+                title: 'Pendaftaran Gagal',
+                html: '<p class="text-gray-600">{{ addslashes(session('error')) }}</p>',
+                confirmButtonColor: '#db2777',
+                confirmButtonText: 'Coba Lagi',
+            });
+        });
+    @endif
+
+    @if($errors->any())
+        document.addEventListener('DOMContentLoaded', function() {
+            // Re-open modal if there are validation errors
+            document.querySelector('[x-data]').__x.$data.bookingOpen = true;
+        });
+    @endif
+</script>
 
 </body>
 
