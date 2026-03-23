@@ -1,59 +1,320 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Klinik Bidan Sejahtera — Sistem Informasi Manajemen Klinik
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+> Sistem informasi manajemen klinik kebidanan terpadu untuk pelayanan ibu dan anak yang optimal.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Daftar Isi
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- [Tentang Aplikasi](#tentang-aplikasi)
+- [Teknologi yang Digunakan](#teknologi-yang-digunakan)
+- [Fitur Utama](#fitur-utama)
+- [Modul Aplikasi](#modul-aplikasi)
+- [Peran Pengguna (Role)](#peran-pengguna-role)
+- [Struktur Database](#struktur-database)
+- [Instalasi](#instalasi)
+- [Akun Default](#akun-default)
+- [Struktur Folder](#struktur-folder)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## Tentang Aplikasi
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+**Klinik Bidan Sejahtera** adalah aplikasi manajemen klinik kebidanan berbasis web yang dibangun dengan Laravel 12. Aplikasi ini mencakup seluruh alur layanan klinik mulai dari pendaftaran antrian publik, rekam medis kehamilan, persalinan, nifas, imunisasi, keluarga berencana, manajemen transaksi, surat rujukan, hingga laporan klinik.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## Teknologi yang Digunakan
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+| Komponen | Teknologi |
+|---|---|
+| Framework Backend | Laravel 12 (PHP ^8.2) |
+| Autentikasi | Laravel Breeze |
+| Manajemen Role | Spatie Laravel Permission v6 |
+| Frontend CSS | Tailwind CSS (via CDN) |
+| Komponen Reaktif | Alpine.js v3 |
+| Tabel Data | jQuery DataTables 1.13.6 |
+| Select Interaktif | Select2 v4.1 |
+| Notifikasi | SweetAlert2 v11 |
+| Icon | Font Awesome 6 |
+| Primary Key | UUID (custom HasUuid trait) |
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## Fitur Utama
 
-## Contributing
+### Halaman Publik
+- Landing page klinik dengan informasi layanan, tim bidan, dan jadwal praktik
+- **Form Daftar Antrian** via modal popup — pasien baru atau lama dapat mendaftar langsung dari halaman utama
+- Tampilan status antrian hari ini (total terdaftar, dalam antrian, estimasi tunggu)
+- Jadwal shift bidan (Pagi / Siang / Malam) ditampilkan secara real-time
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Dashboard Admin
+- Statistik ringkasan: total pasien, antrian hari ini, transaksi, dan pendapatan bulan ini
+- Grafik kunjungan dan transaksi
+- Daftar antrian terbaru
 
-## Code of Conduct
+### Dashboard Bidan
+- Daftar pasien yang perlu dilayani hari ini
+- Akses cepat ke rekam medis, ANC, persalinan, nifas
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Dashboard Apotek
+- Daftar resep yang belum disiapkan
+- Monitoring stok obat menipis
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Modul Aplikasi
 
-## License
+### 1. Manajemen Antrian & Jadwal (Appointments)
+- Pendaftaran antrian dari halaman publik maupun admin
+- Nomor antrian otomatis berformat `A-001`, `A-002`, dst. (reset harian)
+- Status antrian: `pending` → `scheduled` → `completed`
+- Assign bidan ke jadwal kunjungan
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 2. Data Pasien
+- CRUD data pasien lengkap (NIK, tanggal lahir, golongan darah, BPJS, dll.)
+- Pencarian pasien berdasarkan nama, NIK, nomor HP, atau nomor BPJS
+- Riwayat kunjungan, kehamilan, dan transaksi per pasien
+
+### 3. Data Bidan
+- CRUD data bidan dengan akun pengguna terintegrasi
+- Nomor SIP (Surat Izin Praktik)
+- Jadwal praktik per shift (Pagi, Siang, Malam)
+- Status aktif/nonaktif
+
+### 4. Pemeriksaan Kehamilan (ANC — Antenatal Care)
+- Pencatatan data kehamilan (HPHT, HPL otomatis +280 hari, riwayat G/P/A)
+- Kunjungan ANC per kehamilan dengan data:
+  - Usia kehamilan (minggu), tinggi fundus uteri (TFU)
+  - Detak jantung janin (DJJ), posisi janin
+  - Berat badan, tekanan darah
+  - Hasil laboratorium, keluhan, tindakan
+- Status kehamilan: `active` / `delivered` / `aborted`
+
+### 5. Persalinan (Delivery)
+- Dokumentasi lengkap proses persalinan:
+  - Waktu persalinan, metode, kondisi bayi lahir
+  - Durasi kala I, II, III
+  - Kondisi perineum, plasenta, perdarahan (ml)
+  - Komplikasi yang terjadi
+- Terhubung otomatis ke data kehamilan
+
+### 6. Data Bayi
+- Pencatatan data bayi baru lahir:
+  - Berat lahir (gram), panjang lahir (cm)
+  - Jenis kelamin, kondisi saat lahir
+- Terhubung ke data persalinan dan data ibu (pasien)
+
+### 7. Kunjungan Nifas (PNC — Postnatal Care)
+- Jadwal kunjungan nifas KF1 s/d KF4 sesuai standar:
+  - KF1: 6 jam–2 hari
+  - KF2: 3–7 hari
+  - KF3: 8–28 hari
+  - KF4: 29–42 hari
+- Pemantauan kondisi lokia, TFU, tekanan darah
+- Status menyusui (lancar / bermasalah)
+
+### 8. Imunisasi
+- Jenis imunisasi dengan rekomendasi usia (dalam hari)
+- Pencatatan imunisasi per pasien/bayi:
+  - Tanggal pemberian, nomor batch vaksin
+  - Terhubung ke data kunjungan
+
+### 9. Keluarga Berencana (KB)
+- Pencatatan akseptor KB:
+  - Metode: Suntik 1 Bulan, Suntik 3 Bulan, Pil KB, IUD/Spiral, Implan/Susuk, Kondom
+  - Tanggal kunjungan, berat badan, tekanan darah
+  - Efek samping / keluhan
+  - Tanggal kunjungan ulang dihitung otomatis sesuai metode
+
+### 10. Rekam Medis (SOAP)
+- Catatan medis format SOAP (Subjective, Objective, Assessment, Plan)
+- Terhubung ke kunjungan dan pasien
+
+### 11. Transaksi & Pembayaran
+- Pembuatan transaksi dengan beberapa item layanan sekaligus (multi-service)
+- Kode invoice otomatis format `INV-YYYYMMDD-XXXX`
+- Metode pembayaran: Tunai, Transfer, QRIS, BPJS
+- Status pembayaran: `paid` / `unpaid`
+- Cetak invoice (print-friendly)
+
+### 12. Surat Rujukan
+- Pembuatan surat rujukan ke rumah sakit langsung dari klinik
+- Tipe rujukan: `emergency` (darurat) / `regular` (biasa)
+- Status rujukan: `pending` → `sent` → `received`
+- Data lengkap: diagnosis, alasan rujukan, rumah sakit tujuan, alamat
+- Cetak surat rujukan resmi (print-friendly dengan kop klinik)
+
+### 13. Obat & Stok (Apotek)
+- Manajemen inventaris obat dan bahan medis
+- Monitoring stok minimum dengan peringatan
+- Pencatatan tanggal kadaluarsa
+- Resep dari bidan terhubung ke stok obat
+
+### 14. Layanan Klinik
+- Master data layanan dengan kategori dan harga
+- Status aktif/nonaktif per layanan
+
+### 15. Laporan
+- Laporan kunjungan, transaksi, dan aktivitas klinik
+
+### 16. CMS Website
+- Manajemen konten halaman publik (slider, highlight layanan, FAQ, pengumuman, kontak)
+- Status publish/unpublish per konten
+
+---
+
+## Peran Pengguna (Role)
+
+| Role | Deskripsi | Akses |
+|---|---|---|
+| `admin` | Administrator / Resepsionis | Semua modul, manajemen pengguna, laporan |
+| `bidan` | Bidan / Tenaga Medis | Pasien, rekam medis, ANC, persalinan, nifas, KB, imunisasi, rujukan |
+| `pharmacy` | Staf Apotek | Manajemen obat, stok, resep |
+| `patient` | Pasien | Hanya melihat data pribadi sendiri |
+
+---
+
+## Struktur Database
+
+Total **20+ tabel** dengan UUID sebagai primary key di seluruh tabel utama.
+
+| Tabel | Deskripsi |
+|---|---|
+| `users` | Akun pengguna (autentikasi) |
+| `patients` | Data pasien (NIK, tanggal lahir, BPJS, dll.) |
+| `midwives` | Data bidan (SIP, jadwal, bio) |
+| `services` | Layanan klinik (nama, kategori, harga) |
+| `medicines` | Inventaris obat dan bahan medis |
+| `practice_schedules` | Jadwal shift bidan |
+| `appointments` | Antrian dan jadwal kunjungan |
+| `medical_records` | Rekam medis SOAP |
+| `pregnancies` | Data kehamilan (HPHT, HPL, G/P/A) |
+| `anc_visits` | Kunjungan ANC per kehamilan |
+| `deliveries` | Dokumentasi persalinan |
+| `babies` | Data bayi baru lahir |
+| `pnc_visits` | Kunjungan nifas (KF1–KF4) |
+| `family_plannings` | Akseptor KB |
+| `immunization_types` | Jenis vaksin dan rekomendasi usia |
+| `immunization_records` | Catatan pemberian imunisasi |
+| `transactions` | Tagihan dan pembayaran |
+| `transaction_details` | Item per transaksi (layanan/obat) |
+| `prescriptions` | Resep obat dari bidan |
+| `referrals` | Surat rujukan ke rumah sakit |
+| `website_contents` | Konten CMS halaman publik |
+
+---
+
+## Instalasi
+
+```bash
+# 1. Clone repositori
+git clone <repo-url>
+cd clinic-midwife
+
+# 2. Install dependensi PHP
+composer install
+
+# 3. Salin file environment
+cp .env.example .env
+
+# 4. Generate app key
+php artisan key:generate
+
+# 5. Konfigurasi database di .env
+DB_CONNECTION=mysql
+DB_DATABASE=clinic_midwife
+DB_USERNAME=root
+DB_PASSWORD=
+
+# 6. Jalankan migrasi dan seeder
+php artisan migrate --seed
+
+# 7. Jalankan server
+php artisan serve
+```
+
+Buka di browser: `http://localhost:8000`
+
+---
+
+## Akun Default
+
+Setelah `php artisan migrate --seed`, akun berikut tersedia:
+
+| Nama | Email | Password | Role |
+|---|---|---|---|
+| Administrator | admin@clinic.com | password | admin |
+| Bidan Siti (Shift Pagi) | siti@clinic.com | password | bidan |
+| Bidan Dewi (Shift Siang) | dewi@clinic.com | password | bidan |
+| Bidan Rina (Shift Malam) | rina@clinic.com | password | bidan |
+| 7 Pasien Contoh | pasien{1-7}@clinic.com | password | patient |
+
+---
+
+## Struktur Folder
+
+```
+app/
+├── Http/Controllers/           # 23 controller (satu per modul)
+├── Models/                     # 21 model (semua menggunakan UUID)
+└── Traits/HasUuid.php          # Trait generate UUID otomatis
+
+database/
+├── migrations/                 # 24 file migrasi tabel
+└── seeders/
+    ├── DatabaseSeeder.php
+    ├── RoleSeeder.php          # Role & permission Spatie
+    ├── MasterDataSeeder.php    # Layanan, obat, jadwal bidan
+    └── ClinicalSeeder.php      # Data klinis contoh
+
+resources/views/
+├── components/
+│   └── admin-layout.blade.php  # Layout utama seluruh halaman admin
+├── auth/
+│   └── login.blade.php         # Halaman login custom
+├── welcome.blade.php           # Landing page publik
+├── appointments/               # Antrian & jadwal kunjungan
+├── patients/                   # Manajemen data pasien
+├── midwives/                   # Manajemen data bidan
+├── pregnancies/                # Pencatatan kehamilan
+├── anc-visits/                 # Pemeriksaan ANC
+├── deliveries/                 # Dokumentasi persalinan
+├── babies/                     # Data bayi baru lahir
+├── pnc-visits/                 # Kunjungan nifas
+├── family-plannings/           # Keluarga berencana
+├── immunizations/              # Imunisasi
+├── transactions/               # Transaksi & invoice
+├── referrals/                  # Surat rujukan RS
+├── medicines/                  # Obat & stok apotek
+├── services/                   # Layanan klinik
+├── reports/                    # Laporan
+└── website-contents/           # CMS konten website
+
+routes/
+├── web.php                     # Semua route aplikasi
+└── auth.php                    # Route autentikasi (Breeze)
+```
+
+---
+
+## Dependensi Utama
+
+```json
+{
+  "require": {
+    "laravel/framework": "^12.0",
+    "spatie/laravel-permission": "^6.24"
+  },
+  "require-dev": {
+    "laravel/breeze": "^2.3",
+    "laravel/sail": "^1.41",
+    "fakerphp/faker": "^1.23"
+  }
+}
+```
+
+---
+
+> Dikembangkan untuk mendukung pelayanan kesehatan ibu dan anak di Indonesia.
