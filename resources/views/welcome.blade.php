@@ -31,13 +31,25 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+    <!-- AOS Scroll Animations -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         body { font-family: 'Poppins', sans-serif; }
         [x-cloak] { display: none !important; }
+        /* Parallax */
+        .parallax-bg {
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+        }
+        @media (max-width: 768px) {
+            .parallax-bg { background-attachment: scroll; }
+        }
         .modal-enter { animation: modalIn 0.3s ease forwards; }
         @keyframes modalIn {
             from { opacity: 0; transform: scale(0.95) translateY(10px); }
@@ -381,12 +393,12 @@
     <section class="py-16 bg-white" id="about">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div>
+                <div data-aos="fade-right" data-aos-duration="800">
                     <img src="https://cdni.iconscout.com/illustration/premium/thumb/midwife-provides-prenatal-care-and-assists-with-childbirth-illustration-svg-download-png-6910614.png"
                         alt="Ilustrasi Bidan"
                         class="w-full max-w-md mx-auto drop-shadow-2xl hover:scale-105 transition duration-500">
                 </div>
-                <div>
+                <div data-aos="fade-left" data-aos-duration="800">
                     <h4 class="text-pink-600 font-bold uppercase tracking-wide mb-2">Tentang Kami</h4>
                     <h2 class="text-3xl font-bold text-gray-900 mb-6">Mitra Terpercaya untuk Keluarga Sehat</h2>
                     <p class="text-gray-600 mb-6 leading-relaxed">
@@ -395,100 +407,92 @@
                         setiap kunjungan Anda menjadi pengalaman yang menenangkan.
                     </p>
                     <ul class="space-y-4 mb-8">
-                        <li class="flex items-start">
+                        <li class="flex items-start" data-aos="fade-up" data-aos-delay="100">
                             <i class="fas fa-check-circle text-pink-600 mt-1 mr-3"></i>
-                            <span class="text-gray-700">Bidan tersertifikasi dan berpengalaman lebih dari 10
-                                tahun.</span>
+                            <span class="text-gray-700">Bidan tersertifikasi dan berpengalaman lebih dari 10 tahun.</span>
                         </li>
-                        <li class="flex items-start">
+                        <li class="flex items-start" data-aos="fade-up" data-aos-delay="200">
                             <i class="fas fa-check-circle text-pink-600 mt-1 mr-3"></i>
                             <span class="text-gray-700">Fasilitas persalinan 24 jam yang steril dan hommy.</span>
                         </li>
-                        <li class="flex items-start">
+                        <li class="flex items-start" data-aos="fade-up" data-aos-delay="300">
                             <i class="fas fa-check-circle text-pink-600 mt-1 mr-3"></i>
                             <span class="text-gray-700">Pelayanan ramah anak dan konseling laktasi.</span>
                         </li>
                     </ul>
-                    <a href="#" class="text-pink-600 font-bold hover:text-pink-800">Pelajari Lebih Lanjut <i
-                            class="fas fa-arrow-right ml-1"></i></a>
+                    <a href="#" class="text-pink-600 font-bold hover:text-pink-800" data-aos="fade-up" data-aos-delay="400">
+                        Pelajari Lebih Lanjut <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Parallax Divider -->
+    <div class="parallax-bg relative h-48 flex items-center justify-center"
+        style="background-image: url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80');">
+        <div class="absolute inset-0 bg-pink-800/70"></div>
+        <div class="relative z-10 text-center text-white" data-aos="zoom-in">
+            <p class="text-2xl font-bold tracking-wide">Kesehatan Anda, Prioritas Kami</p>
+            <p class="text-pink-200 mt-1">Lebih dari 1.000 ibu dan bayi telah kami layani dengan sepenuh hati</p>
+        </div>
+    </div>
+
     <!-- Services Section -->
     <section class="py-16 bg-gray-50" id="services">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
+            <div class="text-center mb-16" data-aos="fade-up">
                 <h4 class="text-pink-600 font-bold uppercase tracking-wide mb-2">Layanan Kami</h4>
                 <h2 class="text-3xl font-bold text-gray-900">Solusi Kesehatan Lengkap</h2>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Service 1 -->
-                <div class="bg-white p-8 rounded-lg shadow hover:shadow-lg transition group">
-                    <div
-                        class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mb-6 text-pink-600 group-hover:bg-pink-600 group-hover:text-white transition">
+                <div class="bg-white p-8 rounded-lg shadow hover:shadow-lg transition group" data-aos="fade-up" data-aos-delay="0">
+                    <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mb-6 text-pink-600 group-hover:bg-pink-600 group-hover:text-white transition">
                         <i class="fas fa-baby-carriage text-2xl"></i>
                     </div>
                     <h3 class="text-xl font-bold mb-3">Pemeriksaan Kehamilan (ANC)</h3>
-                    <p class="text-gray-600 mb-4">Pemantauan kesehatan ibu dan janin secara berkala dengan standar
-                        pelayanan terkini.</p>
+                    <p class="text-gray-600">Pemantauan kesehatan ibu dan janin secara berkala dengan standar pelayanan terkini.</p>
                 </div>
 
-                <!-- Service 2 -->
-                <div class="bg-white p-8 rounded-lg shadow hover:shadow-lg transition group">
-                    <div
-                        class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mb-6 text-pink-600 group-hover:bg-pink-600 group-hover:text-white transition">
+                <div class="bg-white p-8 rounded-lg shadow hover:shadow-lg transition group" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mb-6 text-pink-600 group-hover:bg-pink-600 group-hover:text-white transition">
                         <i class="fas fa-hospital-user text-2xl"></i>
                     </div>
                     <h3 class="text-xl font-bold mb-3">Persalinan Normal</h3>
-                    <p class="text-gray-600 mb-4">Layanan persalinan 24 jam dengan asuhan sayang ibu dan bayi serta
-                        inisiasi menyusui dini.</p>
+                    <p class="text-gray-600">Layanan persalinan 24 jam dengan asuhan sayang ibu dan bayi serta inisiasi menyusui dini.</p>
                 </div>
 
-                <!-- Service 3 -->
-                <div class="bg-white p-8 rounded-lg shadow hover:shadow-lg transition group">
-                    <div
-                        class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mb-6 text-pink-600 group-hover:bg-pink-600 group-hover:text-white transition">
+                <div class="bg-white p-8 rounded-lg shadow hover:shadow-lg transition group" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mb-6 text-pink-600 group-hover:bg-pink-600 group-hover:text-white transition">
                         <i class="fas fa-syringe text-2xl"></i>
                     </div>
                     <h3 class="text-xl font-bold mb-3">Imunisasi Dasar</h3>
-                    <p class="text-gray-600 mb-4">Lengkapi perlindungan buah hati dengan imunisasi dasar lengkap dan
-                        vaksin tambahan.</p>
+                    <p class="text-gray-600">Lengkapi perlindungan buah hati dengan imunisasi dasar lengkap dan vaksin tambahan.</p>
                 </div>
 
-                <!-- Service 4 -->
-                <div class="bg-white p-8 rounded-lg shadow hover:shadow-lg transition group">
-                    <div
-                        class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mb-6 text-pink-600 group-hover:bg-pink-600 group-hover:text-white transition">
+                <div class="bg-white p-8 rounded-lg shadow hover:shadow-lg transition group" data-aos="fade-up" data-aos-delay="0">
+                    <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mb-6 text-pink-600 group-hover:bg-pink-600 group-hover:text-white transition">
                         <i class="fas fa-pills text-2xl"></i>
                     </div>
                     <h3 class="text-xl font-bold mb-3">Keluarga Berencana (KB)</h3>
-                    <p class="text-gray-600 mb-4">Konseling dan pelayanan kontrasepsi (Suntik, Pil, IUD, Implant) sesuai
-                        kebutuhan.</p>
+                    <p class="text-gray-600">Konseling dan pelayanan kontrasepsi (Suntik, Pil, IUD, Implant) sesuai kebutuhan.</p>
                 </div>
 
-                <!-- Service 5 -->
-                <div class="bg-white p-8 rounded-lg shadow hover:shadow-lg transition group">
-                    <div
-                        class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mb-6 text-pink-600 group-hover:bg-pink-600 group-hover:text-white transition">
+                <div class="bg-white p-8 rounded-lg shadow hover:shadow-lg transition group" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mb-6 text-pink-600 group-hover:bg-pink-600 group-hover:text-white transition">
                         <i class="fas fa-child text-2xl"></i>
                     </div>
                     <h3 class="text-xl font-bold mb-3">Tumbuh Kembang Anak</h3>
-                    <p class="text-gray-600 mb-4">Deteksi dini tumbuh kembang balita dan stimulasi perkembangan anak.
-                    </p>
+                    <p class="text-gray-600">Deteksi dini tumbuh kembang balita dan stimulasi perkembangan anak.</p>
                 </div>
 
-                <!-- Service 6 -->
-                <div class="bg-white p-8 rounded-lg shadow hover:shadow-lg transition group">
-                    <div
-                        class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mb-6 text-pink-600 group-hover:bg-pink-600 group-hover:text-white transition">
+                <div class="bg-white p-8 rounded-lg shadow hover:shadow-lg transition group" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mb-6 text-pink-600 group-hover:bg-pink-600 group-hover:text-white transition">
                         <i class="fas fa-user-md text-2xl"></i>
                     </div>
                     <h3 class="text-xl font-bold mb-3">Konsultasi Kesehatan Wanita</h3>
-                    <p class="text-gray-600 mb-4">Layanan kesehatan reproduksi remaja, pra-nikah, hingga masa menopause.
-                    </p>
+                    <p class="text-gray-600">Layanan kesehatan reproduksi remaja, pra-nikah, hingga masa menopause.</p>
                 </div>
             </div>
         </div>
@@ -497,14 +501,14 @@
     <!-- Schedule Section (Jadwal Bidan) -->
     <section class="py-16 bg-white border-t" id="schedule">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
+            <div class="text-center mb-12" data-aos="fade-up">
                 <h4 class="text-pink-600 font-bold uppercase tracking-wide mb-2">Jadwal Praktik</h4>
                 <h2 class="text-3xl font-bold text-gray-900">Siap Melayani Anda Sepanjang Hari</h2>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Shift Pagi -->
-                <div class="bg-blue-50 rounded-xl p-8 border border-blue-100 hover:shadow-lg transition">
+                <div class="bg-blue-50 rounded-xl p-8 border border-blue-100 hover:shadow-lg transition" data-aos="fade-up" data-aos-delay="0">
                     <div class="flex items-center mb-6">
                         <div
                             class="w-12 h-12 rounded-full bg-blue-500 text-white flex items-center justify-center text-xl mr-4">
@@ -534,7 +538,7 @@
                 </div>
 
                 <!-- Shift Siang -->
-                <div class="bg-orange-50 rounded-xl p-8 border border-orange-100 hover:shadow-lg transition">
+                <div class="bg-orange-50 rounded-xl p-8 border border-orange-100 hover:shadow-lg transition" data-aos="fade-up" data-aos-delay="150">
                     <div class="flex items-center mb-6">
                         <div
                             class="w-12 h-12 rounded-full bg-orange-500 text-white flex items-center justify-center text-xl mr-4">
@@ -564,7 +568,7 @@
                 </div>
 
                 <!-- Shift Malam -->
-                <div class="bg-indigo-50 rounded-xl p-8 border border-indigo-100 hover:shadow-lg transition">
+                <div class="bg-indigo-50 rounded-xl p-8 border border-indigo-100 hover:shadow-lg transition" data-aos="fade-up" data-aos-delay="300">
                     <div class="flex items-center mb-6">
                         <div
                             class="w-12 h-12 rounded-full bg-indigo-500 text-white flex items-center justify-center text-xl mr-4">
@@ -599,8 +603,8 @@
     <!-- Team / Midwife Section -->
     <section class="py-16 bg-white" id="team">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h4 class="text-pink-600 font-bold uppercase tracking-wide mb-2">Tim Kami</h4>
-            <h2 class="text-3xl font-bold text-gray-900 mb-12">Bidan Profesional Anda</h2>
+            <h4 class="text-pink-600 font-bold uppercase tracking-wide mb-2" data-aos="fade-up">Tim Kami</h4>
+            <h2 class="text-3xl font-bold text-gray-900 mb-12" data-aos="fade-up" data-aos-delay="100">Bidan Profesional Anda</h2>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 @php
@@ -608,7 +612,7 @@
                 @endphp
 
                 @foreach($midwives as $midwife)
-                    <div
+                    <div data-aos="zoom-in" data-aos-delay="{{ $loop->index * 150 }}"
                         class="bg-white border rounded-lg overflow-hidden relative group shadow-sm hover:shadow-md transition">
                         <div class="h-80 overflow-hidden">
                             <img src="{{ $midwife->photo_path ?? 'https://ui-avatars.com/api/?name=' . urlencode($midwife->user->name) }}"
@@ -628,13 +632,16 @@
         </div>
     </section>
 
-    <!-- CTA Section -->
-    <section class="py-16 bg-pink-600 text-white text-center">
-        <div class="max-w-4xl mx-auto px-4">
-            <h2 class="text-3xl font-bold mb-6">Siap untuk Kunjungan Anda?</h2>
-            <p class="text-xl mb-8 opacity-90">Jangan ragu untuk berkonsultasi mengenai kesehatan kehamilan dan buah
-                hati Anda bersama kami.</p>
-            <button @click="bookingOpen = true"
+    <!-- CTA Section — Parallax -->
+    <section class="parallax-bg relative py-24 text-white text-center"
+        style="background-image: url('https://images.unsplash.com/photo-1505751172876-fa1923c5c528?ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80');">
+        <div class="absolute inset-0 bg-pink-700/80"></div>
+        <div class="relative z-10 max-w-4xl mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4" data-aos="fade-up">Siap untuk Kunjungan Anda?</h2>
+            <p class="text-xl mb-8 opacity-90" data-aos="fade-up" data-aos-delay="100">
+                Jangan ragu untuk berkonsultasi mengenai kesehatan kehamilan dan buah hati Anda bersama kami.
+            </p>
+            <button @click="bookingOpen = true" data-aos="zoom-in" data-aos-delay="200"
                 class="inline-flex items-center gap-2 px-8 py-3.5 bg-white text-pink-600 font-bold rounded-full shadow-lg hover:bg-gray-50 active:scale-95 transition">
                 <i class="fas fa-calendar-plus"></i> Daftar Antrian Sekarang
             </button>
@@ -644,7 +651,7 @@
     <!-- Footer -->
     <footer class="bg-gray-900 text-gray-300 py-12" id="contact">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-12">
-            <div>
+            <div data-aos="fade-up" data-aos-delay="0">
                 <div class="flex items-center mb-6">
                     <i class="fas fa-heartbeat text-3xl text-pink-500 mr-2"></i>
                     <span class="text-2xl font-bold text-white">Bidan<span class="text-pink-500">Sejahtera</span></span>
@@ -706,6 +713,14 @@
 
 
 <script>
+    // Initialize AOS
+    AOS.init({
+        duration: 700,
+        easing: 'ease-out-cubic',
+        once: true,
+        offset: 80,
+    });
+
     @if(session('success'))
         document.addEventListener('DOMContentLoaded', function() {
             Swal.fire({
