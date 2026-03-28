@@ -632,6 +632,59 @@
         </div>
     </section>
 
+    <!-- Artikel Terbaru -->
+    @php $latestPosts = \App\Models\Post::with('category')->where('status','published')->latest('published_at')->limit(3)->get(); @endphp
+    @if($latestPosts->count() > 0)
+    <section class="py-20 bg-gray-50" id="artikel">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12" data-aos="fade-up">
+                <span class="inline-block bg-primary/10 text-primary text-xs font-semibold px-4 py-1.5 rounded-full mb-3 uppercase tracking-wide">Blog & Berita</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">Artikel Kesehatan Terkini</h2>
+                <p class="text-gray-500 max-w-xl mx-auto">Informasi dan tips kesehatan dari tim profesional kami untuk keluarga Anda.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                @foreach($latestPosts as $i => $post)
+                <article data-aos="fade-up" data-aos-delay="{{ $i * 100 }}"
+                    class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow group">
+                    <a href="{{ route('blog.show', $post->slug) }}">
+                        @if($post->thumbnail)
+                            <img src="{{ asset('storage/' . $post->thumbnail) }}" alt="{{ $post->title }}"
+                                class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                        @else
+                            <div class="w-full h-48 bg-gradient-to-br from-pink-50 to-primary/10 flex items-center justify-center">
+                                <i class="fas fa-newspaper text-4xl text-primary/30"></i>
+                            </div>
+                        @endif
+                    </a>
+                    <div class="p-5">
+                        @if($post->category)
+                            <span class="bg-primary/10 text-primary text-xs font-semibold px-2.5 py-0.5 rounded-full">{{ $post->category->name }}</span>
+                        @endif
+                        <h3 class="font-bold text-gray-900 mt-3 mb-2 text-base line-clamp-2 group-hover:text-primary transition-colors">
+                            <a href="{{ route('blog.show', $post->slug) }}">{{ $post->title }}</a>
+                        </h3>
+                        @if($post->excerpt)
+                            <p class="text-gray-500 text-sm line-clamp-2 mb-4">{{ $post->excerpt }}</p>
+                        @endif
+                        <div class="flex items-center justify-between text-xs text-gray-400">
+                            <span><i class="fas fa-calendar mr-1"></i>{{ $post->published_at?->format('d M Y') }}</span>
+                            <a href="{{ route('blog.show', $post->slug) }}" class="text-primary font-semibold hover:underline">
+                                Baca <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+                @endforeach
+            </div>
+            <div class="text-center mt-10" data-aos="fade-up">
+                <a href="{{ route('blog.index') }}" class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-semibold rounded-full hover:bg-opacity-90 transition shadow-sm">
+                    <i class="fas fa-newspaper"></i> Lihat Semua Artikel
+                </a>
+            </div>
+        </div>
+    </section>
+    @endif
+
     <!-- CTA Section — Parallax -->
     <section class="parallax-bg relative py-24 text-white text-center"
         style="background-image: url('https://images.unsplash.com/photo-1505751172876-fa1923c5c528?ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80');">

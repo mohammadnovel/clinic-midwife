@@ -19,6 +19,8 @@ use App\Http\Controllers\FamilyPlanningController;
 use App\Http\Controllers\ImmunizationRecordController;
 use App\Http\Controllers\WebsiteContentController;
 use App\Http\Controllers\ReferralController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
 use App\Models\Service;
@@ -29,6 +31,8 @@ use App\Http\Controllers\HomeController;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/queue', [QueueController::class, 'index'])->name('queue.display');
 Route::post('/queue', [QueueController::class, 'store'])->name('queue.store');
+Route::get('/blog', [PostController::class, 'publicIndex'])->name('blog.index');
+Route::get('/blog/{slug}', [PostController::class, 'publicShow'])->name('blog.show');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -54,6 +58,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('transactions', TransactionController::class);
     Route::resource('referrals', ReferralController::class);
     Route::resource('website-contents', WebsiteContentController::class);
+
+    // Blog / Konten
+    Route::resource('categories', CategoryController::class);
+    Route::resource('posts', PostController::class);
 
     // Reports
     Route::get('/reports', [\App\Http\Controllers\ReportController::class, 'index'])->name('reports.index');

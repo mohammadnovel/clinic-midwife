@@ -198,6 +198,24 @@
                     </div>
 
                     <div>
+                        <h3 class="mb-4 text-sm font-semibold text-gray-400 uppercase">Konten & Blog</h3>
+                        <ul class="mb-6 flex flex-col gap-1.5 space-y-1">
+                            <li>
+                                <a href="{{ route('posts.index') }}"
+                                    class="flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium {{ request()->routeIs('posts.*') ? 'bg-gray-700 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-700' }}">
+                                    <i class="fas fa-newspaper"></i> Artikel & Berita
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('categories.index') }}"
+                                    class="flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium {{ request()->routeIs('categories.*') ? 'bg-gray-700 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-700' }}">
+                                    <i class="fas fa-tags"></i> Kategori
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div>
                         <h3 class="mb-4 text-sm font-semibold text-gray-400 uppercase">Manajemen</h3>
                         <ul class="mb-6 flex flex-col gap-1.5 space-y-1">
                             <li>
