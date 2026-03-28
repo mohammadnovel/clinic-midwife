@@ -23,10 +23,13 @@ class ServiceController extends Controller
     public function store(\Illuminate\Http\Request $request)
     {
         $data = $request->validate([
-            'name' => 'required|string',
-            'code' => 'required|string|unique:services,code',
-            'category' => 'required|string',
-            'price' => 'required|numeric',
+            'name'        => 'required|string',
+            'code'        => 'required|string|unique:services,code',
+            'category'    => 'required|string',
+            'price'       => 'required|numeric',
+            'icon'        => 'nullable|string|max:100',
+            'description' => 'nullable|string|max:500',
+            'is_active'   => 'required|boolean',
         ]);
 
         \App\Models\Service::create($data);
@@ -42,10 +45,13 @@ class ServiceController extends Controller
     public function update(\Illuminate\Http\Request $request, \App\Models\Service $service)
     {
         $data = $request->validate([
-            'name' => 'required|string',
-            'code' => 'required|string|unique:services,code,' . $service->id,
-            'category' => 'required|string',
-            'price' => 'required|numeric',
+            'name'        => 'required|string',
+            'code'        => 'required|string|unique:services,code,' . $service->id,
+            'category'    => 'required|string',
+            'price'       => 'required|numeric',
+            'icon'        => 'nullable|string|max:100',
+            'description' => 'nullable|string|max:500',
+            'is_active'   => 'required|boolean',
         ]);
 
         $service->update($data);

@@ -11,4 +11,9 @@ class Service extends Model
     use HasFactory, HasUuid;
 
     protected $guarded = [];
+
+    protected $casts = [
+        'is_active' => 'boolean',
+        'price'     => 'decimal:2',
+    ];
 }

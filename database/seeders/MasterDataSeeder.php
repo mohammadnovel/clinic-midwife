@@ -18,11 +18,13 @@ class MasterDataSeeder extends Seeder
     {
         // Services
         $services = [
-            ['code' => 'ANC01', 'name' => 'Pemeriksaan ANC', 'category' => 'ANC', 'price' => 50000],
-            ['code' => 'DEL01', 'name' => 'Persalinan Normal', 'category' => 'Delivery', 'price' => 1500000],
-            ['code' => 'IMM01', 'name' => 'Imunisasi Dasar', 'category' => 'Immunization', 'price' => 30000],
-            ['code' => 'KB01', 'name' => 'Suntik KB 1 Bulan', 'category' => 'Planning', 'price' => 25000],
-            ['code' => 'KB02', 'name' => 'Suntik KB 3 Bulan', 'category' => 'Planning', 'price' => 30000],
+            ['code' => 'ANC01', 'name' => 'Pemeriksaan Kehamilan (ANC)', 'category' => 'ANC',          'price' => 50000,   'icon' => 'fas fa-baby-carriage',      'description' => 'Pemantauan kesehatan ibu dan janin secara berkala dengan standar pelayanan terkini.'],
+            ['code' => 'DEL01', 'name' => 'Persalinan Normal',           'category' => 'Delivery',     'price' => 1500000, 'icon' => 'fas fa-hospital-user',      'description' => 'Layanan persalinan 24 jam dengan asuhan sayang ibu dan bayi serta inisiasi menyusui dini.'],
+            ['code' => 'IMM01', 'name' => 'Imunisasi Dasar',             'category' => 'Immunization', 'price' => 30000,   'icon' => 'fas fa-syringe',            'description' => 'Lengkapi perlindungan buah hati dengan imunisasi dasar lengkap dan vaksin tambahan.'],
+            ['code' => 'KB01',  'name' => 'Suntik KB 1 Bulan',          'category' => 'Planning',     'price' => 25000,   'icon' => 'fas fa-pills',              'description' => 'Konseling dan pelayanan kontrasepsi suntik KB 1 bulan sesuai kebutuhan pasien.'],
+            ['code' => 'KB02',  'name' => 'Suntik KB 3 Bulan',          'category' => 'Planning',     'price' => 30000,   'icon' => 'fas fa-pills',              'description' => 'Konseling dan pelayanan kontrasepsi suntik KB 3 bulan sesuai kebutuhan pasien.'],
+            ['code' => 'PNC01', 'name' => 'Kunjungan Nifas (PNC)',       'category' => 'General',      'price' => 40000,   'icon' => 'fas fa-child',              'description' => 'Pemeriksaan ibu dan bayi pasca persalinan untuk memastikan pemulihan berjalan optimal.'],
+            ['code' => 'GEN01', 'name' => 'Konsultasi Kesehatan Wanita', 'category' => 'General',      'price' => 35000,   'icon' => 'fas fa-user-nurse',         'description' => 'Layanan kesehatan reproduksi remaja, pra-nikah, hingga masa menopause.'],
         ];
 
         foreach ($services as $s) {

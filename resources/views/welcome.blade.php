@@ -446,55 +446,21 @@
                 <h2 class="text-3xl font-bold text-gray-900">Solusi Kesehatan Lengkap</h2>
             </div>
 
+            @if($services->isEmpty())
+            <p class="text-center text-gray-400">Belum ada layanan tersedia.</p>
+            @else
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="bg-white p-8 rounded-lg shadow hover:shadow-lg transition group" data-aos="fade-up" data-aos-delay="0">
+                @foreach($services as $i => $service)
+                <div class="bg-white p-8 rounded-lg shadow hover:shadow-lg transition group" data-aos="fade-up" data-aos-delay="{{ ($i % 3) * 100 }}">
                     <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mb-6 text-pink-600 group-hover:bg-pink-600 group-hover:text-white transition">
-                        <i class="fas fa-baby-carriage text-2xl"></i>
+                        <i class="{{ $service->icon ?? 'fas fa-hand-holding-medical' }} text-2xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3">Pemeriksaan Kehamilan (ANC)</h3>
-                    <p class="text-gray-600">Pemantauan kesehatan ibu dan janin secara berkala dengan standar pelayanan terkini.</p>
+                    <h3 class="text-xl font-bold mb-3">{{ $service->name }}</h3>
+                    <p class="text-gray-600">{{ $service->description ?? '' }}</p>
                 </div>
-
-                <div class="bg-white p-8 rounded-lg shadow hover:shadow-lg transition group" data-aos="fade-up" data-aos-delay="100">
-                    <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mb-6 text-pink-600 group-hover:bg-pink-600 group-hover:text-white transition">
-                        <i class="fas fa-hospital-user text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Persalinan Normal</h3>
-                    <p class="text-gray-600">Layanan persalinan 24 jam dengan asuhan sayang ibu dan bayi serta inisiasi menyusui dini.</p>
-                </div>
-
-                <div class="bg-white p-8 rounded-lg shadow hover:shadow-lg transition group" data-aos="fade-up" data-aos-delay="200">
-                    <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mb-6 text-pink-600 group-hover:bg-pink-600 group-hover:text-white transition">
-                        <i class="fas fa-syringe text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Imunisasi Dasar</h3>
-                    <p class="text-gray-600">Lengkapi perlindungan buah hati dengan imunisasi dasar lengkap dan vaksin tambahan.</p>
-                </div>
-
-                <div class="bg-white p-8 rounded-lg shadow hover:shadow-lg transition group" data-aos="fade-up" data-aos-delay="0">
-                    <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mb-6 text-pink-600 group-hover:bg-pink-600 group-hover:text-white transition">
-                        <i class="fas fa-pills text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Keluarga Berencana (KB)</h3>
-                    <p class="text-gray-600">Konseling dan pelayanan kontrasepsi (Suntik, Pil, IUD, Implant) sesuai kebutuhan.</p>
-                </div>
-
-                <div class="bg-white p-8 rounded-lg shadow hover:shadow-lg transition group" data-aos="fade-up" data-aos-delay="100">
-                    <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mb-6 text-pink-600 group-hover:bg-pink-600 group-hover:text-white transition">
-                        <i class="fas fa-child text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Tumbuh Kembang Anak</h3>
-                    <p class="text-gray-600">Deteksi dini tumbuh kembang balita dan stimulasi perkembangan anak.</p>
-                </div>
-
-                <div class="bg-white p-8 rounded-lg shadow hover:shadow-lg transition group" data-aos="fade-up" data-aos-delay="200">
-                    <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mb-6 text-pink-600 group-hover:bg-pink-600 group-hover:text-white transition">
-                        <i class="fas fa-user-md text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Konsultasi Kesehatan Wanita</h3>
-                    <p class="text-gray-600">Layanan kesehatan reproduksi remaja, pra-nikah, hingga masa menopause.</p>
-                </div>
+                @endforeach
             </div>
+            @endif
         </div>
     </section>
 

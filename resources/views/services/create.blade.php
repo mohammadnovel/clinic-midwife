@@ -55,6 +55,18 @@
             </div>
 
             <div>
+                <label class="mb-2 block text-sm font-medium text-black dark:text-white">Icon <span class="text-gray-400 font-normal text-xs">(Font Awesome class)</span></label>
+                <div class="flex items-center gap-3">
+                    <div id="icon-preview" class="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary text-lg flex-shrink-0">
+                        <i class="{{ old('icon', 'fas fa-hand-holding-medical') }}"></i>
+                    </div>
+                    <input type="text" name="icon" id="icon-input" value="{{ old('icon', 'fas fa-hand-holding-medical') }}" placeholder="Contoh: fas fa-baby-carriage"
+                        class="w-full rounded-lg border border-stroke bg-transparent py-3 px-4 text-sm outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
+                </div>
+                <p class="text-xs text-gray-400 mt-1">Cari icon di <a href="https://fontawesome.com/icons" target="_blank" class="text-primary hover:underline">fontawesome.com/icons</a> → klik icon → salin class-nya</p>
+            </div>
+
+            <div>
                 <label class="mb-2 block text-sm font-medium text-black dark:text-white">Deskripsi</label>
                 <textarea name="description" rows="3" placeholder="Deskripsi layanan..."
                     class="w-full rounded-lg border border-stroke bg-transparent py-3 px-4 text-sm outline-none focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">{{ old('description') }}</textarea>
@@ -78,4 +90,10 @@
         </form>
     </div>
 </div>
+<script>
+    document.getElementById('icon-input').addEventListener('input', function () {
+        const icon = document.querySelector('#icon-preview i');
+        icon.className = this.value || 'fas fa-hand-holding-medical';
+    });
+</script>
 </x-admin-layout>

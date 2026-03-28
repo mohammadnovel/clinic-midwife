@@ -58,7 +58,7 @@ class HomeController extends Controller
         }
 
         // 3. Services & Content (Existing)
-        $services = Service::all();
+        $services = Service::where('is_active', true)->get();
         $sliders = WebsiteContent::where('key', 'slider')->get();
         $midwives = Midwife::with('user')->where('is_active', true)->get();
 
